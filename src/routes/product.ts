@@ -4,11 +4,12 @@ import { status } from '../models/status-model';
 import { VerifyToken } from '../middelware/autentication';
 import { validatorHandler } from '../validator/validator';
 import { register_product } from '../schema/product-schema';
+import { supermarket } from '../models/supermarket-model';
 const app = express();
 
 app.get('/get_product_by_supermarket/:id', VerifyToken, async(req, res) => {
     try {
-        const products: any = await product.findAll({where: {supermarketid: req.params.id}, include: [{model: status, as: 'status'}, {model: product, as: 'product'}]})
+        const products: any = await product.findAll({where: {supermarketid: req.params.id}, include: [{model: status, as: 'status'}, {model: supermarket, as: 'supermarket'}]})
 
         return res.status(200).json({ status: true, message: "consulta exitosa", products})
     } catch (error: any) {
@@ -18,7 +19,7 @@ app.get('/get_product_by_supermarket/:id', VerifyToken, async(req, res) => {
 
 app.get('/get_product_by_id/:id', VerifyToken, async(req, res) => {
     try {
-        const products: any = await product.findOne({where: {id: req.params.id},include: {model: status, as: 'status'}})
+        const products: any = await product.findOne({where: {id: req.params.id},include: [{model: status, as: 'status'}, {model: supermarket, as: 'supermarket'}]})
 
         return res.status(200).json({ status: true, message: "consulta exitosa", products})
     } catch (error: any) {
