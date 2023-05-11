@@ -14,10 +14,10 @@ describe('POST /login', () =>{
 describe('POST /register_user', () =>{
     test('should respond with a 200 status code', async() =>{
         const response = await request(app).post('/register_user').send({
-            email: "suilp@gmail.com",
+            email: "suilppdasm@gmail.com",
 	        password: "12sd3sdakajasd",
             name: "luis"
         })
-        expect(response.statusCode).toBe(400)
+        expect(response.statusCode).toBe(200)
     })
 })

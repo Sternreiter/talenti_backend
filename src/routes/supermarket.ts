@@ -47,7 +47,7 @@ app.put('/update_supermarket/:id', VerifyToken, validatorHandler(register_superm
         supermark.statusId = req.body.statusId;
         await supermark.save()
 
-        return res.status(200).json({ status: true, message: "Registro exitoso", supermark})
+        return res.status(200).json({ status: true, message: "Actualización exitosa", supermark})
     } catch (error: any) {
         return res.status(500).json({ status: false, message: error.message })
     }

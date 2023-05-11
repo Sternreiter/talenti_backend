@@ -6,6 +6,8 @@ import { login, register } from '../schema/user-schema';
 import {user} from '../models/user-model';
 const app = express();
 
+app.use(express.json())
+
 app.post('/login', validatorHandler(login, 'body'), async(req, res) => {
     try{
         const login: any = await user.findOne({

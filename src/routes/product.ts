@@ -2,6 +2,8 @@ import express from 'express';
 import { product } from '../models/product-model';
 import { status } from '../models/status-model';
 import { VerifyToken } from '../middelware/autentication';
+import { validatorHandler } from '../validator/validator';
+import { register_product } from '../schema/product-schema';
 const app = express();
 
 app.get('/get_product_by_supermarket/:id', VerifyToken, async(req, res) => {
@@ -24,7 +26,7 @@ app.get('/get_product_by_id/:id', VerifyToken, async(req, res) => {
     }
 })
 
-app.post('/register_product', VerifyToken, async(req, res) => {
+app.post('/register_product', VerifyToken, validatorHandler(register_product, 'body'), async(req, res) => {
     try {
         const products: any = await product.create(req.body);
 
@@ -34,9 +36,10 @@ app.post('/register_product', VerifyToken, async(req, res) => {
     }
 })
 
-app.put('/update_product', VerifyToken, async(req, res) => {
+app.put('/update_product/:id', VerifyToken, validatorHandler(register_product, 'body'), async(req, res) => {
     try {
-        const products: any = await product.findOne({where: {id: req.body.id}});
+        const products: any = await product.findOne({where: {id: req.params.id}});
+        products.supermarketid = req.body.supermarketid;
         products.name = req.body.name;
         products.description = req.body.description;
         products.quantity = req.body.quantity;
@@ -45,7 +48,7 @@ app.put('/update_product', VerifyToken, async(req, res) => {
         products.statusId = req.body.statusId;
         await products.save()
 
-        return res.status(200).json({ status: true, message: "Registro exitoso", products})
+        return res.status(200).json({ status: true, message: "Actualización exitosa", products})
     } catch (error: any) {
         return res.status(500).json({ status: false, message: error.message })
     }
