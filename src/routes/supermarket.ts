@@ -63,4 +63,4 @@ app.delete('/delete_supermarket/:id', VerifyToken, async(req, res) => {
     }
 })
 
-module.exports = app;
+export default app;
