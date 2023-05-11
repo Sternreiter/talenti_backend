@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import bodyParser from 'body-parser'
 import moment from 'moment'
 import { sequelize } from './database/database';
@@ -12,6 +13,14 @@ async function main() {
     await sequelize.sync();
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+
+    app.use(cors({
+      'allowedHeaders': ['sessionId', 'Content-Type', 'Authorization'],
+      'exposedHeaders': ['sessionId'],
+      'origin': '*',
+      'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      'preflightContinue': false
+    }));
 
     const PORT = process.env.PORT
 
