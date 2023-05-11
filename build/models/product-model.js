@@ -24,7 +24,7 @@ exports.product = database_1.sequelize.define('product', {
         type: sequelize_1.DataTypes.DECIMAL
     },
     expired_at: {
-        type: sequelize_1.DataTypes.DATE
+        type: sequelize_1.DataTypes.DATEONLY
     }
 }, {
     createdAt: true,

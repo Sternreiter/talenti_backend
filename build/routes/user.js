@@ -20,6 +20,47 @@ const user_schema_1 = require("../schema/user-schema");
 const user_model_1 = require("../models/user-model");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      User:
+ *        type: object
+ *        properties:
+ *          email:
+ *            type: string
+ *            description: Email login
+ *            default: suilppm@gmail.com
+ *          password:
+ *            type: string
+ *            description: Password login
+ *            default: 12sd3sdakajasd
+ */
+/**
+ * @swagger
+ * /api/login:
+ *  post:
+ *    summary: Login
+ *    tags: [User]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/User'
+ *    responses:
+ *      200:
+ *        descriptions: Login successfull
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/User'
+ *      404:
+ *        descriptions: general error
+ */
 app.post('/login', (0, validator_1.validatorHandler)(user_schema_1.login, 'body'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const login = yield user_model_1.user.findOne({
@@ -49,6 +90,51 @@ app.post('/login', (0, validator_1.validatorHandler)(user_schema_1.login, 'body'
         return res.status(500).json({ status: false, messagge: error.message });
     }
 }));
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      UserRegister:
+ *        type: object
+ *        properties:
+ *          email:
+ *            type: string
+ *            description: Email user register
+ *            default: suilppm@gmail.com
+ *          password:
+ *            type: string
+ *            description: Password user register
+ *            default: 12sd3sdakajasd
+ *          name:
+ *            type: string
+ *            description: Name user register
+ *            default: Luis
+ */
+/**
+ * @swagger
+ * /api/register_user:
+ *  post:
+ *    summary: Register User
+ *    tags: [User]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/UserRegister'
+ *    responses:
+ *      200:
+ *        descriptions: Register successfull
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/UserRegister'
+ *      404:
+ *        descriptions: general error
+ */
 app.post('/register_user', (0, validator_1.validatorHandler)(user_schema_1.register, 'body'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         var salt = yield bcrypt_1.default.genSalt(10);

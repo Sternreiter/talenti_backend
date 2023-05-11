@@ -20,6 +20,10 @@ Para realizar los test correspondientes a las apis, ejecute el comando:
 npm run test
 
 ## Usage
+IMPORTANTE: Se realizo la integración de un servicio conocido como swagger, el cual permite documentar las apis de una manera mas accesible para el desarrollador y el usuario. Se recomienda usar este servicio para comodidad de las pruebas. La ruta es:
+
+http://ec2-3-141-145-108.us-east-2.compute.amazonaws.com:4000/api-doc/
+
 Las peticiones presentadas en este backend estan en un esquema API REST, por lo cual todas las peticiones se pueden consultar con un CURL mediante una plataforma de consulta de API (ya sea Insomnia o Postman).
 
 Los curl a ejecutar en el ambiente local y de producción son los siguientes:

@@ -38,7 +38,7 @@ describe('POST /register_product', () => {
             description: "Producto de limpieza",
             quantity: 10,
             amount: 5,
-            expired_at: "30/5/2023",
+            expired_at: "5/30/2023",
             statusId: 1
         });
         expect(response.statusCode).toBe(200);

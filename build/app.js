@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const moment_1 = __importDefault(require("moment"));
+const path_1 = __importDefault(require("path"));
 const database_1 = require("./database/database");
 require("./models/models");
 require('dotenv').config();
@@ -26,12 +27,43 @@ function main() {
             yield database_1.sequelize.sync();
             app.use(body_parser_1.default.urlencoded({ extended: false }));
             app.use(body_parser_1.default.json());
+            const swaggerUI = require("swagger-ui-express");
+            const swaggerJsDoc = require("swagger-jsdoc");
+            const swagerSpec = {
+                definition: {
+                    openapi: "3.0.0",
+                    info: {
+                        tittle: "Uzza API",
+                        version: "1.0.0"
+                    },
+                    servers: [
+                        {
+                            url: `${process.env.URL}`
+                        }
+                    ],
+                    components: {
+                        securitySchemes: {
+                            bearerAuth: {
+                                type: "http",
+                                scheme: "bearer",
+                                bearerFormat: "JWT"
+                            }
+                        }
+                    },
+                    security: [
+                        {
+                            bearerAuth: [],
+                        }
+                    ]
+                },
+                apis: [`${path_1.default.join(__dirname, "./routes/*.js")}`]
+            };
             app.use((0, cors_1.default)({
                 'allowedHeaders': ['sessionId', 'Content-Type', 'Authorization'],
                 'exposedHeaders': ['sessionId'],
                 'origin': '*',
                 'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-                'preflightContinue': false
+                'preflightContinue': false,
             }));
             const PORT = process.env.PORT;
             app.get('/', (_, res) => {
@@ -40,6 +72,7 @@ function main() {
                 });
             });
             app.use('/api', require('./routes/index'));
+            app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swagerSpec)));
             app.listen(PORT, () => {
                 console.log(`escuchando el puerto ${PORT}`);
             });
